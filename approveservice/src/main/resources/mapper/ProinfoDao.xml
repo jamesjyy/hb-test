@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.ProinfoDao">
+
+    <resultMap type="cn.best.approveservice.entity.Proinfo" id="ProinfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="version" column="version" jdbcType="VARCHAR"/>
+        <result property="appid" column="appid" jdbcType="VARCHAR"/>
+        <result property="uname" column="uname" jdbcType="VARCHAR"/>
+        <result property="equipment" column="equipment" jdbcType="VARCHAR"/>
+        <result property="beiyong2" column="beiyong2" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="VARCHAR"/>
+        <result property="userid" column="userid" jdbcType="INTEGER"/>
+
+        <result property="createtime" column="createtime" jdbcType="VARCHAR"/>
+        <result property="updatetime" column="updatetime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <insert id="insert">
+        insert into hb_datayun.proinfo
+        <set>
+            <if test="version != null and version != ''">
+                version = #{version},
+            </if>
+            <if test="uname != null and uname != ''">
+                uname = #{uname},
+            </if>
+            <if test="equipment != null and equipment != ''">
+                equipment = #{equipment},
+            </if>
+            <if test="beiyong2 != null and beiyong2 != ''">
+                beiyong2 = #{beiyong2},
+            </if>
+            <if test="count != null and count != ''">
+                count = #{count},
+            </if>
+
+            <if test="appid != null and appid != ''">
+                appid = #{appid},
+            </if>
+
+            <if test="userid != null and userid != ''">
+                userid = #{userid},
+            </if>
+
+            <if test="createtime != null and createtime != ''">
+                createtime = #{createtime},
+            </if>
+
+            <if test="updatetime != null and updatetime != ''">
+                updatetime = #{updatetime},
+            </if>
+
+        </set>
+    </insert>
+
+    <!--查询设备对应数量-->
+    <select id="queryByappid" resultMap="ProinfoMap">
+
+        SELECT SUBSTR(t.appid,1,2) as appid ,count(*) as count from proinfo t INNER JOIN acl_user_role a ON a.user_id=t.userid where t.uname = #{uname} AND a.role_id=2 GROUP BY SUBSTR(t.appid,1,2)
+    </select>
+
+
+    <!--查询设备是否绑定子用户-->
+    <select id="queryByu" resultMap="ProinfoMap">
+        SELECT p.equipment,r.user_id FROM proinfo p INNER JOIN acl_user_role r ON p.userid=r.user_id WHERE p.uname=#{uname} AND r.role_id=3 and p.equipment=#{equipment}
+    </select>
+
+
+    <select id="findbyappid" resultMap="ProinfoMap">
+        SELECT p.equipment,p.id,p.appid,r.user_id FROM proinfo p INNER JOIN acl_user_role r ON p.userid=r.user_id WHERE p.uname=#{uname} AND r.role_id=2
+    </select>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ProinfoMap">
+        select *
+        from hb_datayun.proinfo
+        where id = #{id}
+    </select>
+
+
+    <select id="selebyuserid" resultMap="ProinfoMap">
+        select *
+        from hb_datayun.proinfo
+        where userid = #{userid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ProinfoMap">
+        select id,
+               version,
+               IMEI,
+               uname
+        from hb_datayun.proinfo limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ProinfoMap">
+        select
+        id, version, IMEI, uname
+        from hb_datayun.proinfo
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="version != null and version != ''">
+                and version = #{version}
+            </if>
+            <if test="imei != null and imei != ''">
+                and IMEI = #{imei}
+            </if>
+            <if test="uname != null and uname != ''">
+                and uname = #{uname}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="inserts" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.proinfo(version, IMEI, uname)
+        values (#{version}, #{imei}, #{uname})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.proinfo(version, IMEI, uname)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.version}, #{entity.imei}, #{entity.uname})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.proinfo(version, IMEI, uname)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.version}, #{entity.imei}, #{entity.uname})
+        </foreach>
+        on duplicate key update
+        version = values(version) , IMEI = values(IMEI) , uname = values(uname)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hb_datayun.proinfo
+        <set>
+            <if test="version != null and version != ''">
+                version = #{version},
+            </if>
+            <if test="imei != null and imei != ''">
+                IMEI = #{imei},
+            </if>
+            <if test="uname != null and uname != ''">
+                uname = #{uname},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from hb_datayun.proinfo
+        where id = #{id}
+    </delete>
+
+</mapper>
+

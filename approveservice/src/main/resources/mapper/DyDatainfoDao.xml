@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.DyDatainfoDao">
+
+    <resultMap type="cn.best.approveservice.entity.DyDatainfo" id="DyDatainfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="loopname" column="loopname" jdbcType="VARCHAR"/>
+        <result property="towernum" column="towernum" jdbcType="VARCHAR"/>
+        <result property="phase" column="phase" jdbcType="VARCHAR"/>
+        <result property="strand" column="strand" jdbcType="INTEGER"/>
+        <result property="result" column="result" jdbcType="VARCHAR"/>
+        <result property="time" column="time" jdbcType="VARCHAR"/>
+        <result property="userid" column="userid" jdbcType="VARCHAR"/>
+        <result property="rcf" column="rcf" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DyDatainfoMap">
+        select id,
+               loopname,
+               towernum,
+               phase,
+               strand,
+               result, time, userid, rcf
+        from hb_datayun.dy_datainfo
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DyDatainfoMap">
+        select id,
+        loopname,
+        towernum,
+        phase,
+        strand,
+        result, time, userid, rcf
+        from dy_datainfo
+        <where>
+            <if test="loopname!=null and loopname!=''">
+                and loopname like '%${loopname}%'
+            </if>
+            <if test="time!=null and time!=''">
+                and time &gt;= SUBSTR(#{searchDate},1,instr(#{searchDate},',')-1
+                and time &lt;= SUBSTR(#{searchDate},instr(#{searchDate},',')+1
+            </if>
+            <if test="towernum!=null and towernum!=''">
+                and towernum like '%${towernum}%'
+            </if>
+        </where>
+        GROUP BY dy_datainfo.id
+    </select>
+    <select id="querycounttower" resultType="java.lang.Integer">
+        select DISTINCT count(towernum)
+        from (SELECT DISTINCT d.towernum
+              FROM dy_datainfo d
+                       left join user a on d.userid = a.id
+                       left join acl_user_role b on a.id = b.user_id
+                       left join role c on b.role_id = c.id
+              where locate("dy", appid)
+                and d.loopname = #{loopname}
+                and c.role = 3
+              ORDER BY d.towernum) f
+
+    </select>
+
+    <select id="querytowernum" resultType="java.lang.String">
+        SELECT DISTINCT d.towernum
+        FROM dy_datainfo d
+                 left join user a on d.userid = a.id
+                 left join acl_user_role b on a.id = b.user_id
+                 left join role c on b.role_id = c.id
+        where locate("dy", appid)
+          and d.loopname = #{loopname}
+          and c.role = 3
+        ORDER BY d.towernum
+    </select>
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DyDatainfoMap">
+        select
+        id, loopname, towernum, phase, strand, result, time, userid, rcf
+        from hb_datayun.dy_datainfo
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="loopname != null and loopname != ''">
+                and loopname = #{loopname}
+            </if>
+            <if test="towernum != null and towernum != ''">
+                and towernum = #{towernum}
+            </if>
+            <if test="phase != null and phase != ''">
+                and phase = #{phase}
+            </if>
+            <if test="strand != null">
+                and strand = #{strand}
+            </if>
+            <if test="result != null and result != ''">
+                and result = #{result}
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time}
+            </if>
+            <if test="userid != null and userid != ''">
+                and userid = #{userid}
+            </if>
+            <if test="rcf != null and rcf != ''">
+                and rcf = #{rcf}
+            </if>
+        </where>
+    </select>
+    <!--    查询故障列表-->
+    <select id="queryAnalyseAll" resultType="cn.best.approveservice.entity.DyDatainfo">
+        select * from hb_datayun.dy_datainfo
+        <where>
+            <if test="userid != null and userid != ''">
+                userid = #{userid}
+            </if>
+            <if test="loopname != null and loopname != ''">
+                and loopname = #{loopname}
+            </if>
+        </where>
+    </select>
+    <select id="queryloopAllByLimit" resultType="cn.best.approveservice.entity.DyDatainfo">
+        SELECT DISTINCT d.loopname
+        FROM dy_datainfo d
+                 left join user a on d.userid = a.id
+                 left join acl_user_role b on a.id = b.user_id
+                 left join role c on b.role_id = c.id
+        where locate("dy", appid)
+          and a.company_name = #{companyName}
+          and c.role = 3
+        <if test="loopname != null and loopname != ''">
+            and loopname  like  '%${loopname}%'
+        </if>
+    </select>
+    <select id="queryInfo" resultType="cn.best.approveservice.entity.DyDatainfo">
+        select *
+        from hb_datayun.dy_datainfo
+        where userid = #{userid}
+    </select>
+
+
+    <!--    查询线路下面的详细数据-->
+    <select id="querytowerData" resultType="cn.best.approveservice.entity.DataInfo">
+        select *
+        FROM hb_datayun.dy_datainfo
+        WHERE userid = #{userid}
+    </select>
+
+    <!--    查询所有的杆塔数据详情-->
+    <select id="queryDyChildAll" resultType="cn.best.approveservice.entity.DyDatainfo">
+        select * FROM hb_datayun.dy_datainfo
+        <where>
+            <if test="userid!=null and userid!=''">
+                userid = #{userid}
+            </if>
+            <if test="loopname!=null and loopname!=''">
+                and loopname = #{loopname}
+            </if>
+            <if test="towernum!=null and towernum!=''">
+                and towernum = #{towernum}
+            </if>
+        </where>
+    </select>
+
+    <!--    查询下拉框数据-->
+
+    <select id="queryChildPhase" resultType="cn.best.approveservice.entity.DyDatainfo">
+        select *
+        FROM hb_datayun.dy_datainfo
+        where userid = #{userid}
+          AND loopname = #{loopname}
+          and towernum = #{towernum}
+
+    </select>
+
+    <select id="queryInfoAll" resultType="cn.best.approveservice.entity.DyDatainfo">
+        select *
+        from hb_datayun.dy_datainfo
+        where userid = #{userid}
+    </select>
+
+    <select id="queryInfoLT" resultType="cn.best.approveservice.entity.DyDatainfo">
+        select *
+        from hb_datayun.dy_datainfo
+        where loopname = #{loopname}
+          and towernum = #{towernum}
+    </select>
+
+    <select id="queryTowerData" resultType="cn.best.approveservice.entity.DyDatainfo">
+        select * from hb_datayun.dy_datainfo
+        <where>
+            <if test="userid != null and userid != ''">
+                userid = #{userid}
+            </if>
+            <if test="loopname != null and loopname != ''">
+                and loopname = #{loopname}
+            </if>
+            <if test="towernum != null and towernum != ''">
+                and towernum = #{towernum}
+            </if>
+            <if test="phase != null and phase != ''">
+                and phase = #{phase}
+            </if>
+
+            <if test="strand != null and strand != ''">
+                and strand = #{strand}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="queryDyBunch" resultType="cn.best.approveservice.entity.DyDatainfo">
+        select * FROM hb_datayun.dy_datainfo
+        <where>
+            <if test="userid!=null and userid!=''">
+                userid = #{userid}
+            </if>
+            <if test="loopname!=null and loopname!=''">
+                and loopname = #{loopname}
+            </if>
+            <if test="towernum!=null and towernum!=''">
+                and towernum = #{towernum}
+            </if>
+            <if test="phase!=null and phase!=''">
+                and phase = #{phase}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.dy_datainfo(loopname, towernum, phase, strand, result, time, userid, rcf)
+        values (#{loopname}, #{towernum}, #{phase}, #{strand}, #{result}, #{time}, #{userid}, #{rcf})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.dy_datainfo(loopname, towernum, phase, strand, result, time, userid, rcf)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.loopname}, #{entity.towernum}, #{entity.phase}, #{entity.strand}, #{entity.result},
+            #{entity.time}, #{entity.userid}, #{entity.rcf})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.dy_datainfo(loopname, towernum, phase, strand, result, time, userid, rcf)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.loopname}, #{entity.towernum}, #{entity.phase}, #{entity.strand}, #{entity.result},
+            #{entity.time}, #{entity.userid}, #{entity.rcf})
+        </foreach>
+        on duplicate key update
+        loopname = values(loopname) , towernum = values(towernum) , phase = values(phase) , strand = values(strand) ,
+        result = values(result) , time = values(time) , userid = values(userid) , rcf = values(rcf)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hb_datayun.dy_datainfo
+        <set>
+            <if test="loopname != null and loopname != ''">
+                loopname = #{loopname},
+            </if>
+            <if test="towernum != null and towernum != ''">
+                towernum = #{towernum},
+            </if>
+            <if test="phase != null and phase != ''">
+                phase = #{phase},
+            </if>
+            <if test="strand != null">
+                strand = #{strand},
+            </if>
+            <if test="result != null and result != ''">
+                result = #{result},
+            </if>
+            <if test="time != null and time != ''">
+                time = #{time},
+            </if>
+            <if test="userid != null and userid != ''">
+                userid = #{userid},
+            </if>
+            <if test="rcf != null and rcf != ''">
+                rcf = #{rcf},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from hb_datayun.dy_datainfo
+        where id = #{id}
+    </delete>
+
+    <!--    通过UserId进行删除-->
+    <delete id="deleteByUserId">
+        delete
+        from hb_datayun.dy_datainfo
+        where userid = #{id}
+    </delete>
+
+    <delete id="deleteByLoopId">
+        delete
+        from hb_datayun.dy_datainfo
+        where userid = #{userid}
+          and loopname = #{loopname}
+    </delete>
+
+    <delete id="deleteOne">
+        delete
+        from hb_datayun.dy_datainfo
+        where userid = #{userid}
+          and loopname = #{loopname}
+          and towernum = #{towernum}
+    </delete>
+
+    <sql id="key">
+        <trim suffixOverrides=",">
+            <if test="loopname!=null and loopname!=''">
+                loopname,
+            </if>
+            <if test="towernum!=null and towernum!=''">
+                towernum,
+            </if>
+            <if test="phase!=null and phase!=''">
+                phase,
+            </if>
+            <if test="strand!=null and strand!=''">
+                strand,
+            </if>
+            <if test="result!=null and result!=''">
+                result,
+            </if>
+            <if test="time!=null and time!=''">
+                time,
+            </if>
+            <if test="userid!=null and userid!=''">
+                userid,
+            </if>
+            <if test="rcf!=null and rcf!=''">
+                rcf,
+            </if>
+        </trim>
+    </sql>
+
+    <!-- 对应的插入字段的值 -->
+    <sql id="values">
+        <trim suffixOverrides=",">
+            <if test="loopname!=null and loopname!=''">
+                #{loopname},
+            </if>
+            <if test="towernum!=null and towernum!=''">
+                #{towernum},
+            </if>
+            <if test="phase!=null and phase!=''">
+                #{phase},
+            </if>
+            <if test="strand!=null and strand!=''">
+                #{strand},
+            </if>
+            <if test="result!=null and result!=''">
+                #{result},
+            </if>
+            <if test="time!=null and time!=''">
+                #{time},
+            </if>
+            <if test="userid!=null and userid!=''">
+                #{userid},
+            </if>
+            <if test="rcf!=null and rcf!=''">
+                #{rcf},
+            </if>
+        </trim>
+    </sql>
+
+    <insert id="insertData" parameterType="DyDatainfo" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert into DY_DATAINFO(<include refid="key"/>)
+        values(<include refid="values"/>)
+    </insert>
+
+
+    <delete id="deleteByTowernumId">
+         delete
+            from hb_datayun.dz_datainfo
+            where userid = #{userid} and loopname = #{loopname} and towernum = #{towernum}
+    </delete>
+</mapper>
+

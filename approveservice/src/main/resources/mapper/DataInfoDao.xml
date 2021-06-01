@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.DataInfoDao">
+
+    <resultMap type="cn.best.approveservice.entity.DyDatainfo" id="DyDatainfoMap">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="loopname" column="LOOPNAME" jdbcType="VARCHAR"/>
+        <result property="towernum" column="TOWERNUM" jdbcType="INTEGER"/>
+        <result property="phase" column="PHASE" jdbcType="VARCHAR"/>
+        <result property="strand" column="STRAND" jdbcType="INTEGER"/>
+        <result property="result" column="RESULT" jdbcType="VARCHAR"/>
+        <result property="time" column="TIME" jdbcType="VARCHAR"/>
+        <result property="userid" column="USERID" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="queryAllByLimit" resultMap="DyDatainfoMap">
+        select id, loopname, towernum, phase, strand, result, time, userid
+        from DY_DATAINFO
+    </select>
+
+    <sql id="key">
+        <trim suffixOverrides=",">
+            <if test="loopname!=null and loopname!=''">
+                loopname,
+            </if>
+            <if test="towernum!=null and towernum!=''">
+                towernum,
+            </if>
+            <if test="phase!=null and phase!=''">
+                phase,
+            </if>
+            <if test="strand!=null and strand!=''">
+                strand,
+            </if>
+            <if test="result!=null and result!=''">
+                result,
+            </if>
+            <if test="time!=null and time!=''">
+                time,
+            </if>
+            <if test="userid!=null and userid!=''">
+                userid,
+            </if>
+        </trim>
+    </sql>
+
+    <!-- 对应的插入字段的值 -->
+    <sql id="values">
+        <trim suffixOverrides=",">
+            <if test="loopname!=null and loopname!=''">
+                #{loopname},
+            </if>
+            <if test="towernum!=null and towernum!=''">
+                #{towernum},
+            </if>
+            <if test="phase!=null and phase!=''">
+                #{phase},
+            </if>
+            <if test="strand!=null and strand!=''">
+                #{strand},
+            </if>
+            <if test="result!=null and result!=''">
+                #{result},
+            </if>
+            <if test="time!=null and time!=''">
+                #{time},
+            </if>
+            <if test="userid!=null and userid!=''">
+                #{userid},
+            </if>
+        </trim>
+    </sql>
+    <insert id="insert" parameterType="DyDatainfo" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert into DY_DATAINFO(<include refid="key"/>)
+        values(<include refid="values"/>)
+    </insert>
+</mapper>

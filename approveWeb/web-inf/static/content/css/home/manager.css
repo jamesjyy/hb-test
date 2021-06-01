@@ -1,0 +1,7 @@
+.top{margin-top: 10px;margin-left: 20px}
+#addUser{display:none;height:90%;position: relative;overflow:auto;}
+#addUser .layui-form-label{width: 20% !important;}
+#addUser .layui-input-inline{width: 40% !important;}
+.buttons{margin-left: 30%}
+#addUser span{color:red}
+#lookForm input{background-color: gainsboro}

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.JfDetaisinfoDao">
+
+    <resultMap type="cn.best.approveservice.entity.JfDetaisinfo" id="JfDetaisinfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="line" column="line" jdbcType="VARCHAR"/>
+        <result property="linenum" column="linenum" jdbcType="VARCHAR"/>
+        <result property="checkuser" column="checkuser" jdbcType="VARCHAR"/>
+        <result property="ctime" column="ctime" jdbcType="VARCHAR"/>
+        <result property="numpic" column="numpic" jdbcType="VARCHAR"/>
+        <result property="allpic" column="allpic" jdbcType="VARCHAR"/>
+        <result property="badpic" column="badpic" jdbcType="VARCHAR"/>
+        <result property="linelevel" column="linelevel" jdbcType="VARCHAR"/>
+        <result property="distance" column="distance" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="JfDetaisinfoMap">
+        select id,
+               line,
+               linenum,
+               checkuser,
+               ctime,
+               numpic,
+               allpic,
+               badpic,
+               linelevel,
+               distance
+        from hb_datayun.jf_detaisinfo
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="JfDetaisinfoMap">
+        select id,
+               line,
+               linenum,
+               checkuser,
+               ctime,
+               numpic,
+               allpic,
+               badpic,
+               linelevel,
+               distance
+        from hb_datayun.jf_detaisinfo limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="JfDetaisinfoMap">
+        select
+        id, line, linenum, checkuser, ctime, numpic, allpic, badpic, linelevel, distance
+        from hb_datayun.jf_detaisinfo
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="line != null and line != ''">
+                and line = #{line}
+            </if>
+            <if test="linenum != null and linenum != ''">
+                and linenum = #{linenum}
+            </if>
+            <if test="checkuser != null and checkuser != ''">
+                and checkuser = #{checkuser}
+            </if>
+            <if test="ctime != null and ctime != ''">
+                and ctime = #{ctime}
+            </if>
+            <if test="numpic != null and numpic != ''">
+                and numpic = #{numpic}
+            </if>
+            <if test="allpic != null and allpic != ''">
+                and allpic = #{allpic}
+            </if>
+            <if test="badpic != null and badpic != ''">
+                and badpic = #{badpic}
+            </if>
+            <if test="linelevel != null and linelevel != ''">
+                and linelevel = #{linelevel}
+            </if>
+            <if test="distance != null and distance != ''">
+                and distance = #{distance}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_detaisinfo(line, linenum, checkuser, ctime, numpic, allpic, badpic, linelevel,
+                                             distance)
+        values (#{line}, #{linenum}, #{checkuser}, #{ctime}, #{numpic}, #{allpic}, #{badpic}, #{linelevel}, #{distance})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_detaisinfo(line, linenum, checkuser, ctime, numpic, allpic, badpic, linelevel,
+        distance)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.line}, #{entity.linenum}, #{entity.checkuser}, #{entity.ctime}, #{entity.numpic},
+            #{entity.allpic}, #{entity.badpic}, #{entity.linelevel}, #{entity.distance})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_detaisinfo(line, linenum, checkuser, ctime, numpic, allpic, badpic, linelevel,
+        distance)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.line}, #{entity.linenum}, #{entity.checkuser}, #{entity.ctime}, #{entity.numpic},
+            #{entity.allpic}, #{entity.badpic}, #{entity.linelevel}, #{entity.distance})
+        </foreach>
+        on duplicate key update
+        line = values(line) , linenum = values(linenum) , checkuser = values(checkuser) , ctime = values(ctime) , numpic
+        = values(numpic) , allpic = values(allpic) , badpic = values(badpic) , linelevel = values(linelevel) , distance
+        = values(distance)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hb_datayun.jf_detaisinfo
+        <set>
+            <if test="line != null and line != ''">
+                line = #{line},
+            </if>
+            <if test="linenum != null and linenum != ''">
+                linenum = #{linenum},
+            </if>
+            <if test="checkuser != null and checkuser != ''">
+                checkuser = #{checkuser},
+            </if>
+            <if test="ctime != null and ctime != ''">
+                ctime = #{ctime},
+            </if>
+            <if test="numpic != null and numpic != ''">
+                numpic = #{numpic},
+            </if>
+            <if test="allpic != null and allpic != ''">
+                allpic = #{allpic},
+            </if>
+            <if test="badpic != null and badpic != ''">
+                badpic = #{badpic},
+            </if>
+            <if test="linelevel != null and linelevel != ''">
+                linelevel = #{linelevel},
+            </if>
+            <if test="distance != null and distance != ''">
+                distance = #{distance},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from hb_datayun.jf_detaisinfo
+        where id = #{id}
+    </delete>
+
+</mapper>
+

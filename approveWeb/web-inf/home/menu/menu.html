@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<!--    <meta http-equiv="Access-Control-Allow-Origin" content="http://localhost:63342">-->
+    <link rel="stylesheet" type="text/css" href=".././static/content/plugin/layuimini/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all"  />
+    <link rel="stylesheet" type="text/css" href=".././static/content/plugin/Hui-iconfont/1.0.8/iconfont.css" media="all"  />
+    <link rel="stylesheet" type="text/css" href=".././static/content/plugin/layuimini/lib/layui-v2.5.5/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href=".././static/content/plugin/zTree_v3/css/zTreeStyle/zTreeStyle.css" media="all"  />
+    <link rel="stylesheet" type="text/css" href=".././static/content/css/home/menu/menu.css" charset="UTF-8" media="all"/>
+    <title>菜单管理</title>
+</head>
+<body>
+    <div id="main">
+        <div class="subHead">
+            <button class="mybtn" id="addMenu"><i class="Hui-iconfont Hui-iconfont-add btnicon" style="color: #85e078;"></i>&nbsp;新增</button>
+            <button class="mybtn" id="enMenu"><i class="Hui-iconfont Hui-iconfont-xuanze btnicon" style="color:#df7373;"></i>&nbsp;启用</button>
+            <button class="mybtn" id="unMenu"><i class="Hui-iconfont Hui-iconfont-del btnicon" style="color:#000;"></i>&nbsp;禁用</button>
+            <button class="mybtn" id="flash"><i class="Hui-iconfont Hui-iconfont-huanyipi btnicon" style="color:#1890ff;"></i>&nbsp;刷新</button>
+        </div>
+        <ul id="menuTree" class="ztree"></ul>
+        <div id="menuDetail" class="layui-form" lay-filter="myform">
+            <input type="hidden" name="id" value="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜单标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="menuname" required  lay-verify="required" placeholder="请输入菜单标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" id="form_url">
+                <label class="layui-form-label">菜单链接</label>
+                <div class="layui-input-block">
+                    <input type="text" name="url" lay-verify="nullcheck" placeholder="请输入菜单链接" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="orderno" lay-verify="required|number" placeholder="请输入菜单排序号，越大越靠前" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">父级菜单</label>
+                <div class="layui-input-block">
+                    <input type="text" name="parentDir"  autocomplete="off" class="layui-input layui-disabled" readonly>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜单类型</label>
+                <div class="layui-input-block">
+                    <input type="text" name="menuType" autocomplete="off" class="layui-input layui-disabled" readonly>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜单图标</label>
+                <div class="layui-input-block">
+                    <input type="text" name="menuicon"  lay-filter="iconPicker" id="myiconPicker" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" id="menu_enabled">
+                <label class="layui-form-label">启用状态</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="enabled" lay-text="启用|禁用" lay-skin="switch">
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="mysub" id="mysub">保存修改</button>
+                    <button class="layui-btn layui-btn-primary" id="cancelEdit">取消修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src=".././static/content/plugin/layuimini/lib/jquery-3.4.1/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src=".././static/content/js/common/common.js" charset="utf-8"></script>
+    <script src=".././static/content/plugin/layuimini/lib/layui-v2.5.5/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src=".././static/content/plugin/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+    <script src=".././static/content/plugin/zTree_v3/js/jquery.ztree.core.js" type="text/javascript" charset="utf-8"></script>
+    <script src=".././static/content/plugin/zTree_v3/js/jquery.ztree.excheck.js" type="text/javascript" charset="utf-8"></script>
+    <script src=".././static/content/js/home/menu/menu.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

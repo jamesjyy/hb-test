@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.UserDao">
+
+    <resultMap type="cn.best.approveservice.entity.User" id="UserMap">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
+        <result property="companyName" column="company_name" jdbcType="VARCHAR"/>
+        <result property="address" column="ADDRESS" jdbcType="VARCHAR"/>
+        <result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+        <result property="module" column="MODULE" jdbcType="VARCHAR"/>
+        <result property="appid" column="appid" jdbcType="VARCHAR"/>
+        <result property="beiyongtwo" column="BEIYONGTWO" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="querycompany" resultMap="UserMap">
+        SELECT distinct (a.id),a.name,a.COMPANY_NAME,a.phone,a.address,a.appid FROM user a
+        left join acl_user_role b on a.id =b.user_id
+        left join role c on b.role_id =c.id
+        <where>
+            <if test="companyName!=null and companyName!=''">
+                and a.COMPANY_NAME like '%${companyName}%'
+            </if>
+            <if test="name!=null and name!=''">
+                and a.name like '%${name}%'
+            </if>
+            and c.role=2
+        </where>
+    </select>
+
+    <select id="querycompanychild" resultMap="UserMap">
+
+        SELECT a.id, a.appid, a.name,a.company_name,a.phone,a.address,c.role_name FROM user a left join acl_user_role b
+        on a.id =b.user_id
+
+        left join role c on b.role_id =c.id
+
+        <where>
+            <if test="name!=null and name!=''">
+                and a.name like '%${name}%'
+            </if>
+
+            <if test="address!=null and address!=''">
+                and a.address like '%${address}%'
+            </if>
+            <if test="companyName!=null and companyName!=''">
+                and a.company_name=#{companyName}
+            </if>
+            and c.role=3
+        </where>
+
+    </select>
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select id,
+               name,
+               password,
+               company_name,
+               address,
+               phone, module, appid, beiyongtwo
+        from hb_datayun.user
+        where id = #{id}
+    </select>
+    <select id="findByUsername" resultMap="UserMap">
+        select id,
+               name,
+               password,
+               company_name,
+               address,
+               phone, module, appid, beiyongtwo
+        from hb_datayun.user
+        where name =#{username}
+    </select>
+
+    <select id="findbycompany" resultMap="UserMap">
+        select id,
+               name,
+               password,
+               name,
+               address,
+               phone, module, appid, beiyongtwo
+        from hb_datayun.user
+        where company_name =#{companyName}
+    </select>
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select id,
+        name,
+        password,
+        company_name,
+        address,
+        phone, module, appid, beiyongtwo
+        from hb_datayun.user
+        <where>
+            <if test="name!=null and name!=''">
+                and name like '%${name}%'
+            </if>
+
+            <if test="companyName!=null and companyName!=''">
+                and companyName like '%${companyName}%'
+            </if>
+        </where>
+        GROUP BY user.id
+    </select>
+
+
+    <select id="queryAllBydy" resultMap="UserMap">
+        select id,
+        name,
+        password,
+        company_name,
+        address,
+        phone, module, appid, beiyongtwo
+        from hb_datayun.user
+        <where>
+            <if test="appid!=null and appid!=''">
+                and appid like '%${appid}%'
+            </if>
+
+        </where>
+        GROUP BY user.id
+    </select>
+
+
+    <select id="queryAllBydz" resultMap="UserMap">
+        select id,
+        name,
+        password,
+        company_name,
+        address,
+        phone, module, appid, beiyongtwo
+        from hb_datayun.user
+        <where>
+            <if test="appid!=null and appid!=''">
+                and appid like '%${appid}%'
+            </if>
+
+        </where>
+        GROUP BY user.id
+    </select>
+
+
+    <select id="queryAllByjf" resultMap="UserMap">
+        select id,
+        name,
+        password,
+        company_name,
+        address,
+        phone, module, appid, beiyongtwo
+        from hb_datayun.user
+        <where>
+            <if test="appid!=null and appid!=''">
+                and appid like '%${appid}%'
+            </if>
+        </where>
+        GROUP BY user.id
+    </select>
+
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserMap">
+        select
+        id, name, password, company_name, address, phone, module, appid, beiyongtwo
+        from hb_datayun.user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and company_name = #{companyName}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="module != null and module != ''">
+                and module = #{module}
+            </if>
+            <if test="appid != null and appid != ''">
+                and beiyong = #{beiyong}
+            </if>
+            <if test="beiyongtwo != null and beiyongtwo != ''">
+                and beiyongtwo = #{beiyongtwo}
+            </if>
+        </where>
+    </select>
+    <!--    查询所有的公司名称,根据公司名称进行模糊查询-->
+    <select id="queryCompanyAll" resultType="cn.best.approveservice.entity.User">
+        SELECT a.id,a.name,a.company_name,a.address FROM user a
+        left join acl_user_role b on a.id =b.user_id
+        left join role c on b.role_id =c.id
+        where c.role=2
+        and a.company_name=(select company_name FROM user
+        <where>
+            <if test="userid!=null and userid!=''">
+                id=#{userid}
+            </if>
+        </where>
+        )
+    </select>
+
+    <!--    根据公司名称查询id-->
+    <select id="queryCompanyNameAll" resultType="java.lang.Integer">
+        SELECT DISTINCT id
+        FROM hb_datayun.user
+        WHERE company_name = #{companyName}
+    </select>
+
+    <select id="queryRoleId" resultType="java.lang.Integer">
+        SELECT c.role
+        FROM user a
+                 left join acl_user_role b on a.id = b.user_id
+                 left join role c on b.role_id = c.id
+        where a.id = #{userid}
+    </select>
+
+    <select id="findUserId" resultType="java.lang.Integer">
+        SELECT DISTINCT id
+        FROM hb_datayun.user
+        WHERE company_name = #{companyName}
+    </select>
+
+
+    <select id="qureyUserId" resultType="java.lang.Integer">
+        SELECT DISTINCT id
+        FROM hb_datayun.user
+        WHERE company_name = (SELECT company_name FROM hb_datayun.user WHERE id = #{userid})
+    </select>
+
+
+    <select id="qureyChildUserId" resultType="java.lang.Integer">
+        SELECT DISTINCT a.id FROM USER a
+        LEFT JOIN dy_datainfo c ON a.id =c.userid
+        <where>
+            <if test="userid!=null and userid!=''">
+                a.company_name = (SELECT company_name FROM hb_datayun.user WHERE id = #{userid})
+            </if>
+            <if test="companyname!=null and companyname!=''">
+                and a.company_name=#{companyname}
+            </if>
+            <if test="loopname!=null and loopname!=''">
+                and c.loopname=#{loopname}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="queryDzCompanyAll" resultType="cn.best.approveservice.entity.User">
+        SELECT a.id,a.name,a.company_name,a.address FROM user a
+        left join acl_user_role b on a.id =b.user_id
+        left join role c on b.role_id =c.id
+        where c.role=2
+        and a.company_name=(select company_name FROM user
+        <where>
+            <if test="userid!=null and userid!=''">
+                id=#{userid}
+            </if>
+        </where>
+        )
+    </select>
+
+    <select id="qureyDzChildUserId" resultType="java.lang.Integer">
+        SELECT DISTINCT a.id FROM USER a LEFT JOIN dz_datainfo c ON a.id =c.userid
+        <where>
+            <if test="userid!=null and userid!=''">
+                a.company_name = (SELECT company_name FROM hb_datayun.user WHERE id = #{userid})
+            </if>
+            <if test="companyname!=null and companyname!=''">
+                and a.company_name=#{companyname}
+            </if>
+            <if test="loopname!=null and loopname!=''">
+                and c.loopname=#{loopname}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryDzChildPhase" resultType="java.lang.Integer">
+        SELECT DISTINCT a.id
+        FROM USER a
+                 LEFT JOIN dz_datainfo c ON a.id = c.userid
+        WHERE a.company_name = (SELECT company_name FROM hb_datayun.user WHERE id = #{userid})
+          AND c.loopname = #{loopname}
+          AND c.towernum = #{towernum}
+    </select>
+
+    <!--    查询拥有局放设备的所有公司名称-->
+    <select id="qureyCompanyAll" resultType="cn.best.approveservice.entity.User">
+        select id ,company_name from `user`
+        <where>
+            appid LIKE '%jf%'
+            <if test="companyName != null and companyName != ''">
+                and company_name = #{companyName}
+            </if>
+        </where>
+    </select>
+
+    <!--    根据设备来查询用户-->
+    <select id="queryDyUserAll" resultType="cn.best.approveservice.entity.User">
+
+--         select DISTINCT company_name from `user`
+--         where
+--         appid LIKE '%dy%'
+    select DISTINCT company_name from `user` u  left join acl_user_role b on u.id = b.user_id
+																						left join role c on b.role_id = c.id
+        where c.role != 1 AND appid LIKE '%dy%'
+        <if test="companyName != null and companyName != ''">
+            and  company_name  like  '%${companyName}%'
+        </if>
+
+    </select>
+
+    <select id="queryDzUserAll" resultType="cn.best.approveservice.entity.User">
+       select DISTINCT company_name from `user` u  left join acl_user_role b on u.id = b.user_id
+																						left join role c on b.role_id = c.id
+        where c.role != 1 AND appid LIKE '%dz%'
+        <if test="companyName != null and companyName != ''">
+            and  company_name  like  '%${companyName}%'
+        </if>
+    </select>
+
+    <select id="queryChildPhase" resultType="java.lang.Integer">
+        SELECT id
+        FROM USER
+        WHERE company_name = #{companyname};
+    </select>
+
+
+    <!-- 新增所有列
+     <insert id="insert">
+         insert into hb_datayun.user(name, password, company_name, address, phone, module, appid, beiyongtwo)
+         values (#{name}, #{password}, #{companyName}, #{address}, #{phone}, #{module}, #{appid}, #{beiyongtwo})
+     </insert>-->
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.user(name, password, company_name, address, phone, module, appid, beiyongtwo)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.password}, #{entity.companyName}, #{entity.address}, #{entity.phone},
+            #{entity.module}, #{entity.appid}, #{entity.beiyongtwo})
+        </foreach>
+    </insert>
+    <select id="AdminqueryAllByLimit" resultMap="UserMap">
+        SELECT a.id, a.name, a.company_name, a.phone, a.address, c.role_name
+        FROM user a
+                 left join acl_user_role b on a.id
+            = b.user_id
+                 left join role c on b.role_id = c.id
+        where locate("dy", appid)
+          and role = 2
+        <if test="companyName != null and companyName != ''">
+            and  a.company_name  like  '%${companyName}%'
+        </if>
+    </select>
+
+    <select id="DzAdminqueryAllByLimit" resultMap="UserMap">
+        SELECT a.id, a.name, a.company_name, a.phone, a.address, c.role_name
+        FROM user a
+                 left join acl_user_role b on a.id
+            = b.user_id
+                 left join role c on b.role_id = c.id
+        where locate("dz", appid)
+          and role = 2
+        <if test="companyName != null and companyName != ''">
+            and  a.company_name  like  '%${companyName}%'
+        </if>
+    </select>
+    <select id="querycountloopname" resultType="java.lang.Integer">
+        select count(loopname) as countnumber
+        from (SELECT DISTINCT d.loopname, a.company_name, c.role_name
+              FROM dy_datainfo d
+                       left join user a on d.userid = a.id
+                       left join acl_user_role b on a.id = b.user_id
+                       left join role c on b.role_id = c.id
+              where locate("dy", appid)
+                and role = 3
+                and a.company_name = (select company_name from user where id = #{id})) f
+    </select>
+
+    <select id="Dzquerycountloopname" resultType="java.lang.Integer">
+        select count(loopname) as countnumber
+        from (SELECT DISTINCT d.loopname, a.company_name, c.role_name
+              FROM dz_datainfo d
+                       left join user a on d.userid = a.id
+                       left join acl_user_role b on a.id = b.user_id
+                       left join role c on b.role_id = c.id
+              where locate("dz", appid)
+                and role = 3
+                and a.company_name = (select company_name from user where id = #{id})) f
+    </select>
+
+    <select id="PtuserqueryAllByLimit" resultMap="UserMap">
+        SELECT a.id, a.name, a.company_name, a.phone, a.address, c.role_name
+        FROM user a
+                 left join acl_user_role b on a.id
+            = b.user_id
+                 left join role c on b.role_id = c.id
+        where c.role = 2
+          and a.id = #{id}
+    </select>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.user(name, password, company_name, address, phone, module, appid, beiyongtwo)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.password}, #{entity.companyName}, #{entity.address}, #{entity.phone},
+            #{entity.module}, #{entity.appid}, #{entity.beiyongtwo})
+        </foreach>
+        on duplicate key update
+        name = values(name) , password = values(password) , company_name = values(company_name) , address =
+        values(address) , phone = values(phone) , module = values(module) , appid = values(appid) , beiyongtwo =
+        values(beiyongtwo)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hb_datayun.user
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="module != null and module != ''">
+                module = #{module},
+            </if>
+            <if test="appid != null and appid != ''">
+                appid = #{appid},
+            </if>
+            <if test="beiyongtwo != null and beiyongtwo != ''">
+                beiyongtwo = #{beiyongtwo},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from hb_datayun.user
+        where id = #{id}
+    </delete>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into hb_datayun.user
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="module != null and module != ''">
+                module = #{module},
+            </if>
+            <if test="appid != null and appid != ''">
+                appid = #{appid},
+            </if>
+            <if test="beiyongtwo != null and beiyongtwo != ''">
+                beiyongtwo = #{beiyongtwo},
+            </if>
+        </set>
+    </insert>
+
+
+</mapper>
+

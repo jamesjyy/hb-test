@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.JfDatainfoDao">
+
+    <resultMap type="cn.best.approveservice.entity.JfDatainfo" id="JfDatainfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="time" column="time" jdbcType="VARCHAR"/>
+        <result property="temperature" column="temperature" jdbcType="VARCHAR"/>
+        <result property="humidity" column="humidity" jdbcType="VARCHAR"/>
+        <result property="numberimg" column="numberimg" jdbcType="VARCHAR"/>
+        <result property="wholeimg" column="wholeimg" jdbcType="VARCHAR"/>
+        <result property="badimg" column="badimg" jdbcType="VARCHAR"/>
+        <result property="audio" column="audio" jdbcType="VARCHAR"/>
+        <result property="stationname" column="stationname" jdbcType="VARCHAR"/>
+        <result property="stationnumber" column="stationnumber" jdbcType="VARCHAR"/>
+        <result property="rcf" column="rcf" jdbcType="VARCHAR"/>
+        <result property="maxdb" column="maxdb" jdbcType="VARCHAR"/>
+        <result property="avedb" column="avedb" jdbcType="VARCHAR"/>
+        <result property="defect" column="defect" jdbcType="VARCHAR"/>
+        <result property="longitude" column="longitude" jdbcType="VARCHAR"/>
+        <result property="latitude" column="latitude" jdbcType="VARCHAR"/>
+        <result property="voicepath" column="voicepath" jdbcType="VARCHAR"/>
+        <result property="defectlevel" column="defectlevel" jdbcType="VARCHAR"/>
+        <result property="area" column="area" jdbcType="VARCHAR"/>
+        <result property="infraredImages" column="infraredImages" jdbcType="VARCHAR"/>
+        <result property="backupthree" column="backupthree" jdbcType="VARCHAR"/>
+        <result property="backupfour" column="backupfour" jdbcType="VARCHAR"/>
+        <result property="backupsix" column="backupsix" jdbcType="VARCHAR"/>
+
+        <result property="deviceHome" column="deviceHome" jdbcType="VARCHAR"/>
+        <result property="levelDistance" column="levelDistance" jdbcType="VARCHAR"/>
+        <result property="poleType" column="poleType" jdbcType="VARCHAR"/>
+        <result property="groundResistance" column="groundResistance" jdbcType="VARCHAR"/>
+        <result property="lineDirection" column="lineDirection" jdbcType="VARCHAR"/>
+        <result property="testResult" column="testResult" jdbcType="VARCHAR"/>
+        <result property="harmType" column="harmType" jdbcType="VARCHAR"/>
+        <result property="qdata_value" column="qdata_value" jdbcType="VARCHAR"/>
+        <result property="fdata_value" column="fdata_value" jdbcType="VARCHAR"/>
+        <result property="xdata_value" column="xdata_value" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_datainfo(time, temperature, humidity, numberimg, wholeimg, badimg, audio, stationname,
+                                           stationnumber, rcf, maxdb, avedb, defect, longitude, latitude, voicepath,
+                                           defectlevel, area, infraredImages, backupthree, backupfour,
+                                           backupsix,deviceHome,levelDistance,poleType,groundResistance,lineDirection,testResult,harmType,qdata_value,fdata_value,xdata_value)
+        values (#{time}, #{temperature}, #{humidity}, #{numberimg}, #{wholeimg}, #{badimg}, #{audio}, #{stationname},
+                #{stationnumber}, #{rcf}, #{maxdb}, #{avedb}, #{defect}, #{longitude}, #{latitude}, #{voicepath},
+                #{defectlevel}, #{area}, #{infraredImages}, #{backupthree}, #{backupfour}, #{backupsix}
+                ,#{deviceHome},#{levelDistance},#{poleType},#{groundResistance},#{lineDirection},#{testResult},#{harmType},#{qdata_value},#{fdata_value},#{xdata_value})
+    </insert>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="JfDatainfoMap">
+        select id, time, temperature, humidity, numberimg, wholeimg, badimg, audio, stationname, stationnumber, rcf, maxdb, avedb, defect, longitude, latitude, voicepath, defectlevel, area, backuptwo, backupthree, backupfour, backupfive, backupsix
+        from hb_datayun.jf_datainfo
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="JfDatainfoMap">
+        select * from hb_datayun.jf_datainfo
+        <where>
+            <if test="stationname!=null and stationname!=''">
+                and stationname like '%${stationname}%'
+            </if>
+            <if test="time!=null and time!=''">
+                and time &gt;= SUBSTR(#{searchDate},1,instr(#{searchDate},',')-1
+                and time &lt;= SUBSTR(#{searchDate},instr(#{searchDate},',')+1
+            </if>
+            <if test="stationnumber!=null and stationnumber!=''">
+                and stationnumber like '%${stationnumber}%'
+            </if>
+            <if test="defectlevel!=null and defectlevel!=''">
+                and defectlevel like '%${defectlevel}%'
+            </if>
+        </where>
+        GROUP BY jf_datainfo.id
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="JfDatainfoMap">
+        select
+        id, time, temperature, humidity, numberimg, wholeimg, badimg, audio, stationname, stationnumber, rcf, maxdb,
+        avedb, defect, longitude, latitude, voicepath, defectlevel, area, backuptwo, backupthree, backupfour,
+        backupfive, backupsix
+        from hb_datayun.jf_datainfo
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time}
+            </if>
+            <if test="temperature != null and temperature != ''">
+                and temperature = #{temperature}
+            </if>
+            <if test="humidity != null and humidity != ''">
+                and humidity = #{humidity}
+            </if>
+            <if test="numberimg != null and numberimg != ''">
+                and numberimg = #{numberimg}
+            </if>
+            <if test="wholeimg != null and wholeimg != ''">
+                and wholeimg = #{wholeimg}
+            </if>
+            <if test="badimg != null and badimg != ''">
+                and badimg = #{badimg}
+            </if>
+            <if test="audio != null and audio != ''">
+                and audio = #{audio}
+            </if>
+            <if test="stationname != null and stationname != ''">
+                and stationname = #{stationname}
+            </if>
+            <if test="stationnumber != null and stationnumber != ''">
+                and stationnumber = #{stationnumber}
+            </if>
+            <if test="rcf != null and rcf != ''">
+                and rcf = #{rcf}
+            </if>
+            <if test="maxdb != null and maxdb != ''">
+                and maxdb = #{maxdb}
+            </if>
+            <if test="avedb != null and avedb != ''">
+                and avedb = #{avedb}
+            </if>
+            <if test="defect != null and defect != ''">
+                and defect = #{defect}
+            </if>
+            <if test="longitude != null and longitude != ''">
+                and longitude = #{longitude}
+            </if>
+            <if test="latitude != null and latitude != ''">
+                and latitude = #{latitude}
+            </if>
+            <if test="voicepath != null and voicepath != ''">
+                and voicepath = #{voicepath}
+            </if>
+            <if test="defectlevel != null and defectlevel != ''">
+                and defectlevel = #{defectlevel}
+            </if>
+            <if test="area != null and area != ''">
+                and area = #{area}
+            </if>
+            <if test="backuptwo != null and backuptwo != ''">
+                and backuptwo = #{backuptwo}
+            </if>
+            <if test="backupthree != null and backupthree != ''">
+                and backupthree = #{backupthree}
+            </if>
+            <if test="backupfour != null and backupfour != ''">
+                and backupfour = #{backupfour}
+            </if>
+            <if test="backupfive != null and backupfive != ''">
+                and backupfive = #{backupfive}
+            </if>
+            <if test="backupsix != null and backupsix != ''">
+                and backupsix = #{backupsix}
+            </if>
+        </where>
+    </select>
+
+
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_datainfo(time, temperature, humidity, numberimg, wholeimg, badimg, audio, stationname,
+        stationnumber, rcf, maxdb, avedb, defect, longitude, latitude, voicepath, defectlevel, area, backuptwo,
+        backupthree, backupfour, backupfive, backupsix)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.time}, #{entity.temperature}, #{entity.humidity}, #{entity.numberimg}, #{entity.wholeimg},
+            #{entity.badimg}, #{entity.audio}, #{entity.stationname}, #{entity.stationnumber}, #{entity.rcf},
+            #{entity.maxdb}, #{entity.avedb}, #{entity.defect}, #{entity.longitude}, #{entity.latitude},
+            #{entity.voicepath}, #{entity.defectlevel}, #{entity.area}, #{entity.backuptwo}, #{entity.backupthree},
+            #{entity.backupfour}, #{entity.backupfive}, #{entity.backupsix})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_datainfo(time, temperature, humidity, numberimg, wholeimg, badimg, audio, stationname,
+        stationnumber, rcf, maxdb, avedb, defect, longitude, latitude, voicepath, defectlevel, area, backuptwo,
+        backupthree, backupfour, backupfive, backupsix)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.time}, #{entity.temperature}, #{entity.humidity}, #{entity.numberimg}, #{entity.wholeimg},
+            #{entity.badimg}, #{entity.audio}, #{entity.stationname}, #{entity.stationnumber}, #{entity.rcf},
+            #{entity.maxdb}, #{entity.avedb}, #{entity.defect}, #{entity.longitude}, #{entity.latitude},
+            #{entity.voicepath}, #{entity.defectlevel}, #{entity.area}, #{entity.backuptwo}, #{entity.backupthree},
+            #{entity.backupfour}, #{entity.backupfive}, #{entity.backupsix})
+        </foreach>
+        on duplicate key update
+        time = values(time) , temperature = values(temperature) , humidity = values(humidity) , numberimg =
+        values(numberimg) , wholeimg = values(wholeimg) , badimg = values(badimg) , audio = values(audio) , stationname
+        = values(stationname) , stationnumber = values(stationnumber) , rcf = values(rcf) , maxdb = values(maxdb) ,
+        avedb = values(avedb) , defect = values(defect) , longitude = values(longitude) , latitude = values(latitude) ,
+        voicepath = values(voicepath) , defectlevel = values(defectlevel) , area = values(area) , backuptwo =
+        values(backuptwo) , backupthree = values(backupthree) , backupfour = values(backupfour) , backupfive =
+        values(backupfive) , backupsix = values(backupsix)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hb_datayun.jf_datainfo
+        <set>
+            <if test="time != null and time != ''">
+                time = #{time},
+            </if>
+            <if test="temperature != null and temperature != ''">
+                temperature = #{temperature},
+            </if>
+            <if test="humidity != null and humidity != ''">
+                humidity = #{humidity},
+            </if>
+            <if test="numberimg != null and numberimg != ''">
+                numberimg = #{numberimg},
+            </if>
+            <if test="wholeimg != null and wholeimg != ''">
+                wholeimg = #{wholeimg},
+            </if>
+            <if test="badimg != null and badimg != ''">
+                badimg = #{badimg},
+            </if>
+            <if test="audio != null and audio != ''">
+                audio = #{audio},
+            </if>
+            <if test="stationname != null and stationname != ''">
+                stationname = #{stationname},
+            </if>
+            <if test="stationnumber != null and stationnumber != ''">
+                stationnumber = #{stationnumber},
+            </if>
+            <if test="rcf != null and rcf != ''">
+                rcf = #{rcf},
+            </if>
+            <if test="maxdb != null and maxdb != ''">
+                maxdb = #{maxdb},
+            </if>
+            <if test="avedb != null and avedb != ''">
+                avedb = #{avedb},
+            </if>
+            <if test="defect != null and defect != ''">
+                defect = #{defect},
+            </if>
+            <if test="longitude != null and longitude != ''">
+                longitude = #{longitude},
+            </if>
+            <if test="latitude != null and latitude != ''">
+                latitude = #{latitude},
+            </if>
+            <if test="voicepath != null and voicepath != ''">
+                voicepath = #{voicepath},
+            </if>
+            <if test="defectlevel != null and defectlevel != ''">
+                defectlevel = #{defectlevel},
+            </if>
+            <if test="area != null and area != ''">acl_role_permission
+                area = #{area},
+            </if>
+<!--            <if test="backuptwo != null and backuptwo != ''">-->
+<!--                backuptwo = #{backuptwo},-->
+<!--            </if>-->
+            <if test="backupthree != null and backupthree != ''">
+                backupthree = #{backupthree},
+            </if>
+            <if test="backupfour != null and backupfour != ''">
+                backupfour = #{backupfour},
+            </if>
+            <if test="backupfive != null and backupfive != ''">
+                backupfive = #{backupfive},
+            </if>
+            <if test="backupsix != null and backupsix != ''">
+                backupsix = #{backupsix},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from hb_datayun.jf_datainfo
+        where id = #{id}
+    </delete>
+
+    <!--查询指定数据-->
+    <select id="searchBreakDownList" resultMap="JfDatainfoMap">
+        select id,
+               stationname,
+               stationnumber,
+               numberimg,
+               wholeimg,
+               badimg,
+               time,
+               temperature,
+               humidity,
+               audio,
+               maxdb,
+               avedb,
+               rcf,
+               longitude,
+               latitude,
+               defectlevel from hb_datayun.jf_datainfo
+        <where>
+            <if test="lineNameInput != null and lineNameInput != ''">
+                and stationname like '%${lineNameInput}%'
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and str_to_date(time, '%Y-%m-%d') &gt;= str_to_date(#{startTime}, '%Y-%m-%d')
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and str_to_date(time, '%Y-%m-%d') &lt;= str_to_date(#{endTime}, '%Y-%m-%d')
+            </if>
+            <if test="lineNoInput != null and lineNoInput != ''">
+                and stationnumber like '%${lineNoInput}%'
+            </if>
+            <if test="flawInput != null and flawInput != ''">
+                and defectlevel like '%${flawInput}%'
+            </if>
+            <if test="area != null and area != ''">
+                and area = '${area}'
+            </if>
+            <if test="area = null and area = '' and userId != '' and userId != ''">
+                and userId = ${userId}
+            </if>
+        </where>
+        ORDER BY time DESC
+    </select>
+
+    <select id="selectCompanyName" resultType="java.util.Map">
+        select u.company_name companyName, count(jd.id) as 'count', count(jd.avedb > 10 or null) as abnormity
+        from `user` u left join jf_datainfo jd on jd.userid = u.id
+        <where>
+            <if test="companyName!=null and companyName!=''">
+                and u.company_name like '%${companyName}%'
+            </if>
+        </where>
+        group by u.company_name
+    </select>
+
+    <select id="selectAreaName" resultType="java.util.Map">
+        select jd.area, count(20 > jd.avedb and jd.avedb >= 10 or null) as abnormity, count(jd.avedb >= 20 or null) as danger
+        from jf_datainfo jd left join `user` u on jd.userid = u.id
+        <where>
+            <if test="companyName!=null and companyName!=''">
+                and u.company_name like '%${companyName}%'
+            </if>
+            <if test="areaName!=null and areaName!=''">
+                and jd.area like '%${areaName}%'
+            </if>
+        </where>
+        group by jd.area
+    </select>
+
+</mapper>
+

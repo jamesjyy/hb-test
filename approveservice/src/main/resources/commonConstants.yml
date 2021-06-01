@@ -1,0 +1,5 @@
+FAIL_MSG: 非法请求
+SOCKET_MSG: 退出登录
+URL_TOKEN: x-token
+SystemName: 绝缘子云分析系统
+rootPath: D:\\uploadfiles

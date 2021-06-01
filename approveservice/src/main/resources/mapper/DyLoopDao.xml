@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.DyLoopDao">
+
+    <resultMap type="cn.best.approveservice.entity.DyLoop" id="DyLoopMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="loopname" column="loopname" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DyLoopMap">
+        select id,
+               loopname
+        from hb_datayun.dy_loop
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DyLoopMap">
+        select id,
+               loopname
+        from hb_datayun.dy_loop limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DyLoopMap">
+        select
+        id, loopname
+        from hb_datayun.dy_loop
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="loopname != null and loopname != ''">
+                and loopname = #{loopname}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.dy_loop(loopname)
+        values (#{loopname})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.dy_loop(loopname)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.loopname})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.dy_loop(loopname)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.loopname})
+        </foreach>
+        on duplicate key update
+        loopname = values(loopname)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hb_datayun.dy_loop
+        <set>
+            <if test="loopname != null and loopname != ''">
+                loopname = #{loopname},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from hb_datayun.dy_loop
+        where id = #{id}
+    </delete>
+
+</mapper>
+

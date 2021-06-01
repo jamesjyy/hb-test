@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.AuthorityDao">
+
+    <resultMap type="cn.best.approveservice.entity.Authority" id="AuthorityMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="describe" column="describe" jdbcType="INTEGER"/>
+        <result property="stasus" column="stasus" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AuthorityMap">
+        select id, describe, stasus
+        from hb_datayun.authority
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AuthorityMap">
+        select id, describe, stasus
+        from hb_datayun.authority
+            limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AuthorityMap">
+        select
+        id, describe, stasus
+        from hb_datayun.authority
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="describe != null">
+                and describe = #{describe}
+            </if>
+            <if test="stasus != null">
+                and stasus = #{stasus}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.authority(describe, stasus)
+        values (#{describe}, #{stasus})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.authority(describe, stasus)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.describe}, #{entity.stasus})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.authority(describe, stasus)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.describe}, #{entity.stasus})
+        </foreach>
+        on duplicate key update
+        describe = values(describe) , stasus = values(stasus)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hb_datayun.authority
+        <set>
+            <if test="describe != null">
+                describe = #{describe},
+            </if>
+            <if test="stasus != null">
+                stasus = #{stasus},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from hb_datayun.authority
+        where id = #{id}
+    </delete>
+
+</mapper>
+

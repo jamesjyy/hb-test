@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.JfTevdatainfoDao">
+
+    <resultMap type="cn.best.approveservice.entity.JfTevdatainfo" id="JfTevdatainfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="time" column="time" jdbcType="VARCHAR"/>
+        <result property="stationname" column="stationname" jdbcType="VARCHAR"/>
+        <result property="stationnumber" column="stationnumber" jdbcType="VARCHAR"/>
+        <result property="checkstation" column="checkstation" jdbcType="VARCHAR"/>
+        <result property="checknumber" column="checknumber" jdbcType="VARCHAR"/>
+        <result property="countnumber" column="countnumber" jdbcType="INTEGER"/>
+        <result property="peakvalue" column="peakvalue" jdbcType="VARCHAR"/>
+        <result property="img" column="img" jdbcType="VARCHAR"/>
+        <result property="backupone" column="backupone" jdbcType="VARCHAR"/>
+        <result property="backuptwo" column="backuptwo" jdbcType="VARCHAR"/>
+        <result property="backupthree" column="backupthree" jdbcType="VARCHAR"/>
+        <result property="backupfour" column="backupfour" jdbcType="VARCHAR"/>
+        <result property="backupfive" column="backupfive" jdbcType="VARCHAR"/>
+        <result property="backupsix" column="backupsix" jdbcType="VARCHAR"/>
+        <result property="userid" column="userid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="JfTevdatainfoMap">
+        select  *
+        from hb_datayun.jf_tevdatainfo
+        where id = #{id}
+    </select>
+
+
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="JfTevdatainfoMap">
+        select
+        id, time, stationname, stationnumber, checkstation, checknumber, countnumber, peakvalue, img, backupone,
+        backuptwo, backupthree, backupfour, backupfive, backupsix
+        from hb_datayun.jf_tevdatainfo
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time}
+            </if>
+            <if test="stationname != null and stationname != ''">
+                and stationname = #{stationname}
+            </if>
+            <if test="stationnumber != null and stationnumber != ''">
+                and stationnumber = #{stationnumber}
+            </if>
+            <if test="checkstation != null and checkstation != ''">
+                and checkstation = #{checkstation}
+            </if>
+            <if test="checknumber != null and checknumber != ''">
+                and checknumber = #{checknumber}
+            </if>
+            <if test="countnumber != null">
+                and countnumber = #{countnumber}
+            </if>
+            <if test="peakvalue != null and peakvalue != ''">
+                and peakvalue = #{peakvalue}
+            </if>
+            <if test="img != null and img != ''">
+                and img = #{img}
+            </if>
+            <if test="backupone != null and backupone != ''">
+                and backupone = #{backupone}
+            </if>
+            <if test="backuptwo != null and backuptwo != ''">
+                and backuptwo = #{backuptwo}
+            </if>
+            <if test="backupthree != null and backupthree != ''">
+                and backupthree = #{backupthree}
+            </if>
+            <if test="backupfour != null and backupfour != ''">
+                and backupfour = #{backupfour}
+            </if>
+            <if test="backupfive != null and backupfive != ''">
+                and backupfive = #{backupfive}
+            </if>
+            <if test="backupsix != null and backupsix != ''">
+                and backupsix = #{backupsix}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByUserId" resultType="cn.best.approveservice.entity.JfTevdatainfo">
+        SELECT stationname FROM jf_tevdatainfo WHERE userid = #{userid} GROUP BY stationname
+    </select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultType="cn.best.approveservice.entity.JfTevdatainfo">
+        select id, time, stationname, stationnumber, checkstation, checknumber, countnumber, peakvalue, img, backupone, backuptwo, backupthree, backupfour, backupfive, backupsix
+        from hb_datayun.jf_tevdatainfo where userid = #{userid};
+    </select>
+
+
+
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_tevdatainfo(time, stationname, stationnumber, checkstation, checknumber, countnumber,
+                                              peakvalue, img, backupone, backuptwo, backupthree, backupfour, backupfive,
+                                              backupsix)
+        values (#{time}, #{stationname}, #{stationnumber}, #{checkstation}, #{checknumber}, #{countnumber},
+                #{peakvalue}, #{img}, #{backupone}, #{backuptwo}, #{backupthree}, #{backupfour}, #{backupfive},
+                #{backupsix})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_tevdatainfo(time, stationname, stationnumber, checkstation, checknumber, countnumber,
+        peakvalue, img, backupone, backuptwo, backupthree, backupfour, backupfive, backupsix)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.time}, #{entity.stationname}, #{entity.stationnumber}, #{entity.checkstation},
+            #{entity.checknumber}, #{entity.countnumber}, #{entity.peakvalue}, #{entity.img}, #{entity.backupone},
+            #{entity.backuptwo}, #{entity.backupthree}, #{entity.backupfour}, #{entity.backupfive}, #{entity.backupsix})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hb_datayun.jf_tevdatainfo(time, stationname, stationnumber, checkstation, checknumber, countnumber,
+        peakvalue, img, backupone, backuptwo, backupthree, backupfour, backupfive, backupsix)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.time}, #{entity.stationname}, #{entity.stationnumber}, #{entity.checkstation},
+            #{entity.checknumber}, #{entity.countnumber}, #{entity.peakvalue}, #{entity.img}, #{entity.backupone},
+            #{entity.backuptwo}, #{entity.backupthree}, #{entity.backupfour}, #{entity.backupfive}, #{entity.backupsix})
+        </foreach>
+        on duplicate key update
+        time = values(time) , stationname = values(stationname) , stationnumber = values(stationnumber) , checkstation =
+        values(checkstation) , checknumber = values(checknumber) , countnumber = values(countnumber) , peakvalue =
+        values(peakvalue) , img = values(img) , backupone = values(backupone) , backuptwo = values(backuptwo) ,
+        backupthree = values(backupthree) , backupfour = values(backupfour) , backupfive = values(backupfive) ,
+        backupsix = values(backupsix)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hb_datayun.jf_tevdatainfo
+        <set>
+            <if test="time != null and time != ''">
+                time = #{time},
+            </if>
+            <if test="stationname != null and stationname != ''">
+                stationname = #{stationname},
+            </if>
+            <if test="stationnumber != null and stationnumber != ''">
+                stationnumber = #{stationnumber},
+            </if>
+            <if test="checkstation != null and checkstation != ''">
+                checkstation = #{checkstation},
+            </if>
+            <if test="checknumber != null and checknumber != ''">
+                checknumber = #{checknumber},
+            </if>
+            <if test="countnumber != null">
+                countnumber = #{countnumber},
+            </if>
+            <if test="peakvalue != null and peakvalue != ''">
+                peakvalue = #{peakvalue},
+            </if>
+            <if test="img != null and img != ''">
+                img = #{img},
+            </if>
+            <if test="backupone != null and backupone != ''">
+                backupone = #{backupone},
+            </if>
+            <if test="backuptwo != null and backuptwo != ''">
+                backuptwo = #{backuptwo},
+            </if>
+            <if test="backupthree != null and backupthree != ''">
+                backupthree = #{backupthree},
+            </if>
+            <if test="backupfour != null and backupfour != ''">
+                backupfour = #{backupfour},
+            </if>
+            <if test="backupfive != null and backupfive != ''">
+                backupfive = #{backupfive},
+            </if>
+            <if test="backupsix != null and backupsix != ''">
+                backupsix = #{backupsix},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from hb_datayun.jf_tevdatainfo
+        where id = #{id}
+    </delete>
+
+</mapper>
+

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.best.approveservice.dao.UserinfoDao">
+
+    <resultMap type="cn.best.approveservice.entity.Userinfo" id="UserinfoMap">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="recordcreatetime" column="RECORDCREATETIME" jdbcType="VARCHAR"/>
+        <result property="callwindowid" column="CALLWINDOWID" jdbcType="INTEGER"/>
+        <result property="loginname" column="LOGINNAME" jdbcType="VARCHAR"/>
+        <result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
+        <result property="username" column="USERNAME" jdbcType="VARCHAR"/>
+        <result property="job" column="JOB" jdbcType="VARCHAR"/>
+        <result property="jobno" column="JOBNO" jdbcType="VARCHAR"/>
+        <result property="regid" column="REGID" jdbcType="INTEGER"/>
+        <result property="depid" column="DEPID" jdbcType="INTEGER"/>
+        <result property="enabled" column="ENABLED" jdbcType="VARCHAR"/>
+        <result property="allspelling" column="ALLSPELLING" jdbcType="VARCHAR"/>
+        <result property="firstspelling" column="FIRSTSPELLING" jdbcType="VARCHAR"/>
+        <result property="mobilephone" column="MOBILEPHONE" jdbcType="VARCHAR"/>
+        <result property="usersperoute" column="USERSPEROUTE" jdbcType="VARCHAR"/>
+        <result property="checknum" column="CHECKNUM" jdbcType="VARCHAR"/>
+        <result property="upfilesid" column="UPFILESID" jdbcType="INTEGER"/>
+        <result property="upworkercode" column="UPWORKERCODE" jdbcType="VARCHAR"/>
+        <result property="officephone" column="OFFICEPHONE" jdbcType="VARCHAR"/>
+        <result property="cardno" column="CARDNO" jdbcType="VARCHAR"/>
+        <result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+        <result property="isworkuser" column="ISWORKUSER" jdbcType="VARCHAR"/>
+
+        <result property="depName" column="depName" jdbcType="VARCHAR"/>
+        <result property="depType" column="depType" jdbcType="VARCHAR"/>
+        <result property="regName" column="regName" jdbcType="VARCHAR"/>
+        <result property="uporgancode" column="uporgancode" jdbcType="VARCHAR"/>
+        <result property="areaCode" column="areaCode" jdbcType="VARCHAR"/>
+        <result property="areaName" column="areaName" jdbcType="VARCHAR"/>
+        <result property="upfilesName" column="upfilesName" jdbcType="VARCHAR"/>
+        <result property="upfilesPath" column="upfilesPath" jdbcType="VARCHAR"/>
+        <result property="upfilesUuid" column="upfilesUuid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="baseSql">t.ID, t.RECORDCREATETIME, t.CALLWINDOWID, t.LOGINNAME, t.PASSWORD, t.USERNAME, t.JOB, t.JOBNO, t.REGID, t.DEPID, t.ENABLED, t.ALLSPELLING, t.FIRSTSPELLING, t.MOBILEPHONE, t.USERSPEROUTE, t.CHECKNUM, t.UPFILESID, t.UPWORKERCODE, t.OFFICEPHONE, t.CARDNO, t.EMAIL, t.ISWORKUSER</sql>
+    <sql id="wel">
+        <where>
+            <if test="id != null">
+                and t.ID = #{id}
+            </if>
+            <if test="recordcreatetime != null and recordcreatetime != ''">
+                and t.RECORDCREATETIME = #{recordcreatetime}
+            </if>
+            <if test="callwindowid != null">
+                and t.CALLWINDOWID = #{callwindowid}
+            </if>
+            <if test="loginname != null and loginname != ''">
+                and t.LOGINNAME like concat(concat('%', #{loginname}), '%')
+            </if>
+            <if test="password != null and password != ''">
+                and t.PASSWORD = #{password}
+            </if>
+            <if test="username != null and username != ''">
+                and t.USERNAME like concat(concat('%', #{username}), '%')
+            </if>
+            <if test="job != null and job != ''">
+                and t.JOB = #{job}
+            </if>
+            <if test="jobno != null and jobno != ''">
+                and t.JOBNO = #{jobno}
+            </if>
+            <if test="regid != null">
+                and t.REGID = #{regid}
+            </if>
+            <if test="depid != null">
+                and t.DEPID = #{depid}
+            </if>
+            <if test="enabled != null and enabled != ''">
+                and t.ENABLED = #{enabled}
+            </if>
+            <if test="allspelling != null and allspelling != ''">
+                and t.ALLSPELLING = #{allspelling}
+            </if>
+            <if test="firstspelling != null and firstspelling != ''">
+                and t.FIRSTSPELLING = #{firstspelling}
+            </if>
+            <if test="mobilephone != null and mobilephone != ''">
+                and t.MOBILEPHONE = #{mobilephone}
+            </if>
+            <if test="usersperoute != null and usersperoute != ''">
+                and t.USERSPEROUTE = #{usersperoute}
+            </if>
+            <if test="checknum != null and checknum != ''">
+                and t.CHECKNUM = #{checknum}
+            </if>
+            <if test="upfilesid != null">
+                and t.UPFILESID = #{upfilesid}
+            </if>
+            <if test="upworkercode != null and upworkercode != ''">
+                and t.UPWORKERCODE = #{upworkercode}
+            </if>
+            <if test="officephone != null and officephone != ''">
+                and t.OFFICEPHONE = #{officephone}
+            </if>
+            <if test="cardno != null and cardno != ''">
+                and t.CARDNO = #{cardno}
+            </if>
+            <if test="email != null and email != ''">
+                and t.EMAIL = #{email}
+            </if>
+            <if test="isworkuser != null and isworkuser != ''">
+                and t.ISWORKUSER = #{isworkuser}
+            </if>
+        </where>
+    </sql>
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserinfoMap">
+        select
+          ID, RECORDCREATETIME, CALLWINDOWID, LOGINNAME, PASSWORD, USERNAME, JOB, JOBNO, REGID, DEPID, ENABLED, ALLSPELLING, FIRSTSPELLING, MOBILEPHONE, USERSPEROUTE, CHECKNUM, UPFILESID, UPWORKERCODE, OFFICEPHONE, CARDNO, EMAIL, ISWORKUSER
+        from USERINFO
+        where ID = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserinfoMap">
+        select
+          ID, RECORDCREATETIME, CALLWINDOWID, LOGINNAME, PASSWORD, USERNAME, JOB, JOBNO, REGID, DEPID, ENABLED, ALLSPELLING, FIRSTSPELLING, MOBILEPHONE, USERSPEROUTE, CHECKNUM, UPFILESID, UPWORKERCODE, OFFICEPHONE, CARDNO, EMAIL, ISWORKUSER
+        from USERINFO
+    </select>
+    <select id="queryUserinfoList" resultMap="UserinfoMap">
+        select <include refid="baseSql"></include>,b.depName,c.regName,b.depType,b.uporgancode,c.prov_code areaCode
+        ,d.filename upfilesName,d.filepath upfilesPath,d.uuid upfilesUuid
+        from USERINFO t
+        left join department b on t.depId=b.id
+        left join  regionalism c on t.regId=c.id
+        left join UPFILES d on t.upfilesId=d.id
+        <include refid="wel"></include>
+    </select>
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserinfoMap">
+        select
+        ID, RECORDCREATETIME, CALLWINDOWID, LOGINNAME, PASSWORD, USERNAME, JOB, JOBNO, REGID, DEPID, ENABLED,
+        ALLSPELLING, FIRSTSPELLING, MOBILEPHONE, USERSPEROUTE, CHECKNUM, UPFILESID, UPWORKERCODE, OFFICEPHONE, CARDNO,
+        EMAIL, ISWORKUSER
+        from USERINFO
+        <where>
+            <if test="id != null">
+                and ID = #{id}
+            </if>
+            <if test="recordcreatetime != null and recordcreatetime != ''">
+                and RECORDCREATETIME = #{recordcreatetime}
+            </if>
+            <if test="callwindowid != null">
+                and CALLWINDOWID = #{callwindowid}
+            </if>
+            <if test="loginname != null and loginname != ''">
+                and LOGINNAME = #{loginname}
+            </if>
+            <if test="password != null and password != ''">
+                and PASSWORD = #{password}
+            </if>
+            <if test="username != null and username != ''">
+                and USERNAME = #{username}
+            </if>
+            <if test="job != null and job != ''">
+                and JOB = #{job}
+            </if>
+            <if test="jobno != null and jobno != ''">
+                and JOBNO = #{jobno}
+            </if>
+            <if test="regid != null">
+                and REGID = #{regid}
+            </if>
+            <if test="depid != null">
+                and DEPID = #{depid}
+            </if>
+            <if test="enabled != null and enabled != ''">
+                and ENABLED = #{enabled}
+            </if>
+            <if test="allspelling != null and allspelling != ''">
+                and ALLSPELLING = #{allspelling}
+            </if>
+            <if test="firstspelling != null and firstspelling != ''">
+                and FIRSTSPELLING = #{firstspelling}
+            </if>
+            <if test="mobilephone != null and mobilephone != ''">
+                and MOBILEPHONE = #{mobilephone}
+            </if>
+            <if test="usersperoute != null and usersperoute != ''">
+                and USERSPEROUTE = #{usersperoute}
+            </if>
+            <if test="checknum != null and checknum != ''">
+                and CHECKNUM = #{checknum}
+            </if>
+            <if test="upfilesid != null">
+                and UPFILESID = #{upfilesid}
+            </if>
+            <if test="upworkercode != null and upworkercode != ''">
+                and UPWORKERCODE = #{upworkercode}
+            </if>
+            <if test="officephone != null and officephone != ''">
+                and OFFICEPHONE = #{officephone}
+            </if>
+            <if test="cardno != null and cardno != ''">
+                and CARDNO = #{cardno}
+            </if>
+            <if test="email != null and email != ''">
+                and EMAIL = #{email}
+            </if>
+            <if test="isworkuser != null and isworkuser != ''">
+                and ISWORKUSER = #{isworkuser}
+            </if>
+        </where>
+    </select>
+    <select id="findByUsername" resultMap="UserinfoMap">
+        select <include refid="baseSql"></include>,d.filename upfilesName,d.filepath upfilesPath,d.uuid upfilesUuid
+        from USERINFO t
+        left join UPFILES d on t.upfilesId=d.id
+        where LOGINNAME=#{username} and t.enabled='1'
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into USERINFO(ID,RECORDCREATETIME, CALLWINDOWID, LOGINNAME, PASSWORD, USERNAME, JOB, JOBNO, REGID, DEPID, ENABLED, ALLSPELLING, FIRSTSPELLING, MOBILEPHONE, USERSPEROUTE, CHECKNUM, UPFILESID, UPWORKERCODE, OFFICEPHONE, CARDNO, EMAIL, ISWORKUSER)
+        values (SEQ_USERINFO.nextval,#{recordcreatetime,jdbcType=VARCHAR}, #{callwindowid,jdbcType=VARCHAR}, #{loginname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, #{jobno,jdbcType=VARCHAR}, #{regid,jdbcType=INTEGER}, #{depid,jdbcType=INTEGER}, #{enabled,jdbcType=VARCHAR}, #{allspelling,jdbcType=VARCHAR}, #{firstspelling,jdbcType=VARCHAR}, #{mobilephone,jdbcType=VARCHAR}, #{usersperoute,jdbcType=VARCHAR}, #{checknum,jdbcType=VARCHAR}, #{upfilesid,jdbcType=INTEGER}, #{upworkercode,jdbcType=VARCHAR}, #{officephone,jdbcType=VARCHAR}, #{cardno,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{isworkuser,jdbcType=VARCHAR})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update USERINFO
+        <set>
+            <if test="recordcreatetime != null and recordcreatetime != ''">
+                RECORDCREATETIME = #{recordcreatetime},
+            </if>
+            <if test="callwindowid != null">
+                CALLWINDOWID = #{callwindowid},
+            </if>
+            <if test="loginname != null and loginname != ''">
+                LOGINNAME = #{loginname},
+            </if>
+            <if test="password != null and password != ''">
+                PASSWORD = #{password},
+            </if>
+            <if test="username != null and username != ''">
+                USERNAME = #{username},
+            </if>
+            <if test="job != null and job != ''">
+                JOB = #{job},
+            </if>
+            <if test="jobno != null and jobno != ''">
+                JOBNO = #{jobno},
+            </if>
+            <if test="regid != null">
+                REGID = #{regid},
+            </if>
+            <if test="depid != null">
+                DEPID = #{depid},
+            </if>
+            <if test="enabled != null and enabled != ''">
+                ENABLED = #{enabled},
+            </if>
+            <if test="allspelling != null and allspelling != ''">
+                ALLSPELLING = #{allspelling},
+            </if>
+            <if test="firstspelling != null and firstspelling != ''">
+                FIRSTSPELLING = #{firstspelling},
+            </if>
+            <if test="mobilephone != null and mobilephone != ''">
+                MOBILEPHONE = #{mobilephone},
+            </if>
+            <if test="usersperoute != null and usersperoute != ''">
+                USERSPEROUTE = #{usersperoute},
+            </if>
+            <if test="checknum != null and checknum != ''">
+                CHECKNUM = #{checknum},
+            </if>
+            <if test="upfilesid != null">
+                UPFILESID = #{upfilesid},
+            </if>
+            <if test="upworkercode != null and upworkercode != ''">
+                UPWORKERCODE = #{upworkercode},
+            </if>
+            <if test="officephone != null and officephone != ''">
+                OFFICEPHONE = #{officephone},
+            </if>
+            <if test="cardno != null and cardno != ''">
+                CARDNO = #{cardno},
+            </if>
+            <if test="email != null and email != ''">
+                EMAIL = #{email},
+            </if>
+            <if test="isworkuser != null and isworkuser != ''">
+                ISWORKUSER = #{isworkuser},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from user where  id=#{id}
+    </delete>
+
+</mapper>

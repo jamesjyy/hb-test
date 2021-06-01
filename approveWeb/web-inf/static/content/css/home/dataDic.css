@@ -1,0 +1,11 @@
+.main{margin-top:10px;}
+.leftDiv{margin-top: 8px;width: 180px;height: 500px;border: 1px solid #99999e;float: left;margin-right: 10px;margin-left: 10px;}
+.rightDiv{display: none;float: left;padding:2px;}
+#checkBox{margin-top:10px;padding:10px;display: none;}
+#addBox{margin-top:10px;padding:10px;display: none;}
+#addTreeBox{margin-top:27px;padding:10px;display:none;}
+.layui-layer-content #checkBox{display: block;}
+.treeNodeSel{font-weight: bold;font-size: 15px;}
+.layui-form-label{width:100px}
+.layui-input-block{margin-left: 130px}
+#addBox .layui-input-inline,.layui-input-block{width: 333px}

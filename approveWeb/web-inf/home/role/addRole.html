@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" type="text/css" href=".././static/content/plugin/Hui-iconfont/1.0.8/iconfont.css" media="all"  />
+    <link rel="stylesheet" type="text/css" href=".././static/content/plugin/layuimini/lib/layui-v2.5.5/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href=".././static/content/plugin/zTree_v3/css/zTreeStyle/zTreeStyle.css" media="all"  />
+    <link rel="stylesheet" type="text/css" href=".././static/content/css/home/role/addRole.css" charset="UTF-8" media="all"/>
+    <title>角色添加</title>
+</head>
+<body>
+<div id="main">
+    <div class="layui-form myform">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="roleName" required  lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" id="menu">
+            <label class="layui-form-label">关联菜单</label>
+            <div class="layui-input-block">
+                <ul id="menuTree" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="layui-form-item" id="auths">
+            <label class="layui-form-label">API权限</label>
+            <div class="layui-input-block">
+                <ul id="apiTree" class="ztree"></ul>
+            </div>
+            <!-- 权限列表放置 -->
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="addRoleFilter">立即提交</button>
+                <button type="button" id="cancalAdd" layuimini-tab-close class="layui-btn layui-btn-primary">取消添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src=".././static/content/plugin/layuimini/lib/jquery-3.4.1/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src=".././static/content/js/common/common.js" charset="utf-8"></script>
+<script src=".././static/content/plugin/layuimini/lib/layui-v2.5.5/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src=".././static/content/plugin/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+<script src=".././static/content/plugin/zTree_v3/js/jquery.ztree.core.js" type="text/javascript" charset="utf-8"></script>
+<script src=".././static/content/plugin/zTree_v3/js/jquery.ztree.excheck.js" type="text/javascript" charset="utf-8"></script>
+<script src=".././static/content/js/home/role/addRole.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

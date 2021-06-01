@@ -1,0 +1,47 @@
+#menuTree{
+    width: 240px;
+    height: 100%;
+    min-height: 100px;
+    margin: 2px 0 2px 2px;
+    float: left;
+}
+#menuDetail{
+    border: 1px solid black;
+    width: calc(100% - 300px - 2px - 10px - 2px - 20px - 10px);
+    height: 440px;
+    float: left;
+    border-radius:10px;
+    box-shadow: 10px 10px 5px #888888;
+    margin: 10px 10px;
+    padding-top: 40px;
+    padding-right: 10px;
+    display: none;
+}
+.subHead{
+    width: calc(100% - 2px);
+    height: 62px;
+    border: 1px solid #dddddd;
+    border-top: 2px solid #749bc3;
+    box-sizing: content-box;
+    margin-top: 15px;
+    background-color: #ecf2f8;
+    display: flex;
+    align-items: center;
+}
+.mybtn{
+    width: 79px;
+    height: 29px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.btnicon{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ztree *{
+    font-size: 15px;
+}
